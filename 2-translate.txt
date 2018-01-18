@@ -1,10 +1,11 @@
-Mediawiki Translate
+# Mediawiki Translate
 
 Previous Step: Export
 Next Step: Despam
 
 The Mediawiki commits need to be translated into commits suitable for Git and Ikiwiki.
-Flatten the XML
+
+## Flatten the XML
 
 Mediawiki produces XML like
 
@@ -20,7 +21,7 @@ Mediawiki produces XML like
       <revision> <id>4</id> <text>fee</text> </revision>
     </page>
   </mediawiki>
-   
+
 
 We need to turn it into a flat list of revisions:
 
@@ -37,7 +38,7 @@ Easy enough. Run each of your XML files through iki-reformat:
    $ xsltproc iki-reformat.xsl output2.xml > reformatted2.xml
    etc.
 
-Explode Edits into Individual Files
+## Explode Edits into Individual Files
 
 We need to combine all the large XML files into a single ginormous XML file so we can sort it and import it all at once.
 
@@ -59,7 +60,8 @@ Now each revision is contained in its own file, named by revision title and the 
 -rw-r--r-- 1 bronson bronson  27K 2007-08-19 09:29 Car-20070819-162947
 
 Notice that the file's modification time is set to the time of the edit as well. (2007-07-14 09:10:51 PDT is the same as 20070714-161051 GMT). This might come in handy later.
-Use Git!
+
+## Use Git!
 
 Definitely check the nodes directory into git! Even if you think you're only going rename a few files, trust me, a temporary git repo makes life a lot nicer.
 
@@ -75,7 +77,8 @@ Create
 There. Now, as you work, commit as often as you can.
 
 Any time you wonder if there's been a mistake, you can just check the git log and revert any commits you need to do over.
-iki-diff-next
+
+## iki-diff-next
 
 This is a tool that allows you to see the differences between each revision to a file. This allows you to easily see a file change over time.
 
@@ -87,24 +90,28 @@ When you see edits like this:
    @@ -1,3 +1,4 @@
    +ergetorelta
    This page contains some notes that I took while I was learning git.
-   
+
    == Support ==
 
 You know that nodes/Git-20071104-065732 is just a defacement and can be deleted.
 
 TODO: include example output here.
-Purge Spam
+
+## Purge Spam
 
 This is a big subject that warrants its own page: Mediawiki Despam. Skip it if you're lucky enough that you don't have any spam that you need to purge.
-Handle Talk and Category Pages
+
+## Handle Talk and Category Pages
 
 TODO: I haven't written a script for this. It should be fairly easy though.
-Handling Move/Renames
+
+## Handling Move/Renames
 
 Summary: All edits for a file that has been moved in the past are stored under the file's new name. We want to put those early edits back under the file's original name
 
 TODO: write the fully-automated move script so I can move most of the following crap onto another page.
-Move/Rename Theory
+
+## Move/Rename Theory
 
 When you rename a page, Mediawiki moves all the page history to the new page and turns the old page into a redirect. It leaves an empty edit with a comment of the format "[[Dpkg/Create the Repository]] moved to [[Dpkg/Apt]] " in the new page's edit history at the point of the move.
 
@@ -113,14 +120,16 @@ Most scms will just drop empty edits, regardless of how detailed the comment is.
 Personally, I think it would make more sense if Mediawiki would just leave leave the old edits at the old node. If they did that, then they could split a page into two or three as well and preserve full history. Simplifying one long page down to multiple smaller ones is a very common task in a wiki. It's a shame that Mediawiki drops the ball here.
 
 Oh well! At least we can clean up behind it. We'll return the old edits to their original locations, restoring wiki history to the way it actually happened. Git should then recognize itself when files are split up and let you watch where the pieces go.
-Find All Renames
+
+## Find All Renames
 
 This command and prints all commit messages of the format "[[Dpkg/Create the Repository]] moved to [[Dpkg/Apt]] ":
 
    grep -r '\[\[.*\]\] moved to \[\[.*\]\]' * > moves
 
 You'll notice that there are two entries for each move: one on the old page and one on the new page. The old page is always turned into a redirect to the new page. Therefore, if the above command prints 10 lines, you have 5 renames to handle.
-Sanitize the moves file
+
+## Sanitize the moves file
 
 Make sure they're all legitimate moves! There's a chance that this expression will match the text on a page, other commits, etc. Just delete lines that aren't actual moves.
 
