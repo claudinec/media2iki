@@ -15,7 +15,7 @@ Finally, you might want to scan over the TODO list at the bottom of the page. Th
 
 ## Edit Courageously
 
-Thes pages are just some coarse notes that I took while going through this process myself. I'm sure they're crap. Please edit these pages directly to ask questions, make comments, clarify things, whatever.
+These pages are just some coarse notes that I took while going through this process myself. I'm sure they're crap. Please edit these pages directly to ask questions, make comments, clarify things, whatever.
 
 ## Prerequisites
 
@@ -82,4 +82,3 @@ Special thanks to Loye Young who reverted spam off my old wiki a whole bunch of 
     * Categories should be turned into tags.
     * Tables? Transclusion? Thumbnails?
     * Write a script demonstrating how to convert all .mediawiki files to .mdwn or other (for people who don't want to run the mediawiki plugin)
-
